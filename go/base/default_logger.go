@@ -7,16 +7,19 @@ package base
 
 import (
 	"bytes"
+	"io"
 
 	"github.com/openark/golib/log"
 )
 
 type simpleLogger struct {
-	buf bytes.Buffer
+	buf *bytes.Buffer
 }
 
 func NewDefaultLogger() *simpleLogger {
-	return &simpleLogger{}
+	return &simpleLogger{
+		buf: bytes.NewBufferString(""),
+	}
 }
 
 func (l *simpleLogger) Debug(args ...interface{}) {
@@ -94,4 +97,8 @@ func (*simpleLogger) SetLevel(level log.LogLevel) {
 
 func (*simpleLogger) SetPrintStackTrace(printStackTraceFlag bool) {
 	log.SetPrintStackTrace(printStackTraceFlag)
+}
+
+func (l *simpleLogger) GetBuf() io.Reader {
+	return l.buf
 }
