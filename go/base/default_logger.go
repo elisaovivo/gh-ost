@@ -6,61 +6,86 @@
 package base
 
 import (
+	"bytes"
+
 	"github.com/openark/golib/log"
 )
 
-type simpleLogger struct{}
+type simpleLogger struct {
+	buf bytes.Buffer
+}
 
 func NewDefaultLogger() *simpleLogger {
 	return &simpleLogger{}
 }
 
-func (*simpleLogger) Debug(args ...interface{}) {
-	log.Debug(args[0].(string), args[1:])
+func (l *simpleLogger) Debug(args ...interface{}) {
+
+	s := log.Debug(args[0].(string), args[1:])
+	l.buf.WriteString(s)
 }
 
-func (*simpleLogger) Debugf(format string, args ...interface{}) {
-	log.Debugf(format, args...)
+func (l *simpleLogger) Debugf(format string, args ...interface{}) {
+	s := log.Debugf(format, args...)
+	l.buf.WriteString(s)
 }
 
-func (*simpleLogger) Info(args ...interface{}) {
-	log.Info(args[0].(string), args[1:])
+func (l *simpleLogger) Info(args ...interface{}) {
+	s := log.Info(args[0].(string), args[1:])
+	l.buf.WriteString(s)
 }
 
-func (*simpleLogger) Infof(format string, args ...interface{}) {
-	log.Infof(format, args...)
+func (l *simpleLogger) Infof(format string, args ...interface{}) {
+	s := log.Infof(format, args...)
+	l.buf.WriteString(s)
 }
 
-func (*simpleLogger) Warning(args ...interface{}) error {
-	return log.Warning(args[0].(string), args[1:])
+func (l *simpleLogger) Warning(args ...interface{}) error {
+	err := log.Warning(args[0].(string), args[1:])
+	l.buf.WriteString(err.Error())
+	return err
 }
 
-func (*simpleLogger) Warningf(format string, args ...interface{}) error {
-	return log.Warningf(format, args...)
+func (l *simpleLogger) Warningf(format string, args ...interface{}) error {
+	err := log.Warningf(format, args...)
+	l.buf.WriteString(err.Error())
+	return err
 }
 
-func (*simpleLogger) Error(args ...interface{}) error {
-	return log.Error(args[0].(string), args[1:])
+func (l *simpleLogger) Error(args ...interface{}) error {
+	err := log.Error(args[0].(string), args[1:])
+	l.buf.WriteString(err.Error())
+	return err
 }
 
-func (*simpleLogger) Errorf(format string, args ...interface{}) error {
-	return log.Errorf(format, args...)
+func (l *simpleLogger) Errorf(format string, args ...interface{}) error {
+	err := log.Errorf(format, args...)
+	l.buf.WriteString(err.Error())
+	return err
 }
 
-func (*simpleLogger) Errore(err error) error {
-	return log.Errore(err)
+func (l *simpleLogger) Errore(err error) error {
+	e := log.Errore(err)
+	l.buf.WriteString(e.Error())
+	return e
 }
 
-func (*simpleLogger) Fatal(args ...interface{}) error {
-	return log.Fatal(args[0].(string), args[1:])
+func (l *simpleLogger) Fatal(args ...interface{}) error {
+	e := log.Fatal(args[0].(string), args[1:])
+	l.buf.WriteString(e.Error())
+	return e
 }
 
-func (*simpleLogger) Fatalf(format string, args ...interface{}) error {
-	return log.Fatalf(format, args...)
+func (l *simpleLogger) Fatalf(format string, args ...interface{}) error {
+	e := log.Fatalf(format, args...)
+	l.buf.WriteString(e.Error())
+	return e
 }
 
-func (*simpleLogger) Fatale(err error) error {
-	return log.Fatale(err)
+func (l *simpleLogger) Fatale(err error) error {
+	e := log.Fatale(err)
+	l.buf.WriteString(e.Error())
+	return e
 }
 
 func (*simpleLogger) SetLevel(level log.LogLevel) {
