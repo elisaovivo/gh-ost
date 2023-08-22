@@ -253,6 +253,7 @@ type Logger interface {
 	Fatale(err error) error
 	SetLevel(level log.LogLevel)
 	SetPrintStackTrace(printStackTraceFlag bool)
+
 	GetBuf() io.Reader
 }
 
