@@ -7,7 +7,6 @@ package base
 
 import (
 	"fmt"
-	"io"
 	"math"
 	"os"
 	"regexp"
@@ -254,7 +253,7 @@ type Logger interface {
 	SetLevel(level log.LogLevel)
 	SetPrintStackTrace(printStackTraceFlag bool)
 
-	GetBuf() io.Reader
+	GetBuf() chan string
 }
 
 type ContextConfig struct {
